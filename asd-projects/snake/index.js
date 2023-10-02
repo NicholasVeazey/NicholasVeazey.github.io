@@ -40,7 +40,7 @@ var activeKey;
 ////////////////////////////////////////////////////////////////////////////////
 
 // TODO: turn on keyboard inputs
-$("body").on("keydown", handleKeyDown);
+$("body").on("keydown", handleKeyDown);/* Pain, agony even, torment perhaps, suffering if you insist. */
 
 // start the game
 init();
@@ -89,16 +89,15 @@ function checkForNewDirection(event) {
   BONUS: Only allow direction changes to take place if the new direction is
   perpendicular to the current direction
   */
-  activeKey=event.which;
 
-  if (activeKey === KEY.LEFT /*& activeKey==!KEY.RIGHT*/) {
+  if (activeKey === KEY.LEFT) {
     snake.head.direction = "left";
-  } else if (activeKey === KEY.RIGHT/* & activeKey==!KEY.LEFT*/) {
+  } else if (activeKey === KEY.RIGHT) {
     snake.head.direction = "right";
-  } else if (activeKey === KEY.UP/* & activeKey==!KEY.DOWN*/) {
-    snake.head.direction = "up";
-  } else if (activeKey === KEY.DOWN/* & activeKey==!KEY.UP*/) {
+  } else if (activeKey === KEY.UP) {
     snake.head.direction = "down";
+  } else if (activeKey === KEY.DOWN) {
+    snake.head.direction = "up";
   }
   console.log(snake.head.direction);
 }
@@ -138,11 +137,14 @@ function hasHitWall() {
   /* 
   TODO 8: Should return true if the snake's head has collided with the four walls of the
   board, false otherwise.
-  
   HINT: What will the row and column of the snake's head be if this were the case?
   */
-
-  return false;
+  if(snake.head.row === -1 || snake.head.row === 21){
+    return true;
+  }else if(snake.head.column === -1 || snake.head.column === 21){
+    return true;
+  }
+  /*return false;*/
 }
 
 function hasCollidedWithApple() {
@@ -152,8 +154,10 @@ function hasCollidedWithApple() {
   
   HINT: Both the apple and the snake's head are aware of their own row and column
   */
-
-  return false;
+  if(snake.head.row === apple.row && snake.head.column === apple.column){
+    return true
+  }
+  /*return false;*/
 }
 
 function handleAppleCollision() {
@@ -174,9 +178,15 @@ function handleAppleCollision() {
   If the tail is moving "down", place the next snakeSquare above it.
   etc...
   */
-  var row = 0;
-  var column = 0;
-
+ if(snake.tail.direction === "left"){
+  snake.tail.column = snake.tail.column -1
+ }else if(snake.tail.direction === "right"){
+  snake.tail.column=snake.tail.column + 1
+ }else if(snake.tail.direction === "up"){
+  snake.tail.row=snake.tail.row+1
+ }else if(snake.tail.direction === "down"){
+  snake.tail.row=snake.tail.row-1
+ }
   // code to determine the row and column of the snakeSquare to add to the snake
 
   makeSnakeSquare(row, column);
