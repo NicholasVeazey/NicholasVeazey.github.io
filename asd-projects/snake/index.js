@@ -33,7 +33,7 @@ var KEY = {
 var updateInterval;
 
 // variable to keep track of the key (keycode) last pressed by the user
-var activeKey
+var activeKey;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// GAME SETUP //////////////////////////////////////
@@ -89,15 +89,16 @@ function checkForNewDirection(event) {
   BONUS: Only allow direction changes to take place if the new direction is
   perpendicular to the current direction
   */
+  activeKey=event.which;
 
-  if (activeKey === KEY.LEFT) {
+  if (activeKey === KEY.LEFT /*& activeKey==!KEY.RIGHT*/) {
     snake.head.direction = "left";
-  } else if (activeKey === KEY.RIGHT) {
-    snake.head.direction = "right"
-  } else if (activeKey === KEY.UP) {
-    snake.head.direction = "up"
-  } else if (activeKey === KEY.DOWN) {
-    snake.head.direction = "down"
+  } else if (activeKey === KEY.RIGHT/* & activeKey==!KEY.LEFT*/) {
+    snake.head.direction = "right";
+  } else if (activeKey === KEY.UP/* & activeKey==!KEY.DOWN*/) {
+    snake.head.direction = "up";
+  } else if (activeKey === KEY.DOWN/* & activeKey==!KEY.UP*/) {
+    snake.head.direction = "down";
   }
   console.log(snake.head.direction);
 }
@@ -117,9 +118,18 @@ function moveSnake() {
   checkForNewDirection();
 
   /* 
-  TODO 7: determine the next row and column for the snake's head
-  
-  HINT: The snake's head will need to move forward 1 square based on the value
+  TODO 7: determine the next row and column for the snake's head*/
+  if (snake.head.direction === "left") {
+    snake.head.column = snake.head.column - 1;
+  }else if (snake.head.direction === "right"){
+    snake.head.column = snake.head.column + 1;
+  }else if (snake.head.direction === "up"){
+    snake.head.row = snake.head.row + 1;
+  }else if (snake.head.direction === "down"){
+    snake.head.row = snake.head.row - 1;
+  }
+  repositionSquare(snake.head);
+  /*HINT: The snake's head will need to move forward 1 square based on the value
   of snake.head.direction which may be one of "left", "right", "up", or "down"
   */
 }
